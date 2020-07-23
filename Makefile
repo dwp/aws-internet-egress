@@ -20,19 +20,6 @@ bootstrap: ## Bootstrap local environment for first use
 	}
 	terraform fmt -recursive
 
-.PHONY: git-hooks
-git-hooks: ## Set up hooks in .githooks
-	@git submodule update --init .githooks ; \
-	git config core.hooksPath .githooks \
-
-
-.PHONY: terraform-init
-terraform-init: ## Run `terraform init` from repo root
-	terraform init
-
-.PHONY: terraform-plan
-terraform-plan: ## Run `terraform plan` from repo root
-	terraform plan
 
 .PHONY: terraform-apply
 terraform-apply: ## Run `terraform apply` from repo root
@@ -41,3 +28,8 @@ terraform-apply: ## Run `terraform apply` from repo root
 .PHONY: terraform-workspace-new
 terraform-workspace-new: ## Creates new Terraform workspace with Concourse remote execution. Run `terraform-workspace-new workspace=<workspace_name>`
 	fly -t aws-concourse execute --config create-workspace.yml --input repo=. -v workspace="$(workspace)"
+.PHONY: git-hooks
+git-hooks: ## Set up hooks in .githooks
+  @git submodule update --init .githooks ; \
+  git config core.hooksPath .githooks \
+
